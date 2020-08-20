@@ -30,6 +30,8 @@
         <spring.framework.version>5.1.8.RELEASE</spring.framework.version>
         <spring.maven.plugin.version>1.4.2.RELEASE</spring.maven.plugin.version>
         <reflections.version>0.9.10</reflections.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     </properties>
 
     <dependencyManagement>
@@ -96,11 +98,12 @@
     <build>
         <plugins>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>2.3.2</version>
+                <version>3.8.1</version>
                 <configuration>
-                    <source>${java.version}</source>
-                    <target>${java.version}</target>
+                    <source>1.8</source>
+                    <target>1.8</target>
                 </configuration>
             </plugin>
             <plugin>
@@ -109,7 +112,7 @@
                 <version>${junit.maven.surefire.plugin.version}</version>
                 <configuration>
                     <includes>
-                        <include>**Test**.java</include>
+                        <include>**Test.java</include>
                         <include>**Should.java</include>
                     </includes>
                 </configuration>
