@@ -1,4 +1,4 @@
-package tech.costa.luiz.grouping;
+package tech.costa.luiz.luiz.grouping;
 
 /**
  * The type Champion.

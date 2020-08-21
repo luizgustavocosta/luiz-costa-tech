@@ -87,8 +87,8 @@ class BackInTimeShould {
         LocalDateTime tokyo = ofInstant(systemUTC.instant(), ZoneId.of("Asia/Tokyo").normalized());
 
         assertTrue(tokyo.isAfter(zonedDateTimeFromClock.toLocalDateTime()));
-        assertTrue(zonedDateTimeFromClock.toLocalDateTime().isBefore(barcelona)); // Happen at 00:00 UTC
-        assertTrue(barcelona.isAfter(saoPaulo)); // Because has the UTC + 02:00 in summer time
+        assertTrue(zonedDateTimeFromClock.toLocalDateTime().isBefore(barcelona));
+        assertTrue(barcelona.isAfter(saoPaulo));
     }
 
 }

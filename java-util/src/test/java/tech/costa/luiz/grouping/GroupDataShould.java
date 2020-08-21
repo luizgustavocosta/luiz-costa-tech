@@ -3,6 +3,7 @@ package tech.costa.luiz.grouping;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import tech.costa.luiz.luiz.grouping.Champion;
 
 import java.io.IOException;
 import java.nio.file.Files;

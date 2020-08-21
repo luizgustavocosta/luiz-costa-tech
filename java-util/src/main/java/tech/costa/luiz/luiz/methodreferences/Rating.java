@@ -1,4 +1,4 @@
-package tech.costa.luiz.methodreferences;
+package tech.costa.luiz.luiz.methodreferences;
 
 import java.util.Optional;
 
@@ -8,7 +8,7 @@ public enum Rating {
 
     EXCELLENT, GOOD , OK;
 
-    static Rating rating(Team team) {
+    public static Rating rating(Team team) {
         if (isNull(team)) {
             return OK;
         } else {

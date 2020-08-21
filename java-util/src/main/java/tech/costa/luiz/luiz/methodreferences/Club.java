@@ -1,4 +1,4 @@
-package tech.costa.luiz.methodreferences;
+package tech.costa.luiz.luiz.methodreferences;
 
 import java.util.List;
 

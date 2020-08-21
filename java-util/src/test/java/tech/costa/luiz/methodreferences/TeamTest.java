@@ -1,6 +1,9 @@
 package tech.costa.luiz.methodreferences;
 
 import org.junit.jupiter.api.Test;
+import tech.costa.luiz.luiz.methodreferences.Club;
+import tech.costa.luiz.luiz.methodreferences.Rating;
+import tech.costa.luiz.luiz.methodreferences.Team;
 
 import java.util.ArrayList;
 import java.util.Arrays;
