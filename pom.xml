@@ -9,6 +9,7 @@
     <modules>
         <module>reactive</module>
         <module>java-util</module>
+        <module>numbers</module>
     </modules>
 
     <parent>
