@@ -8,8 +8,14 @@ import java.math.BigDecimal;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
+/**
+ * The type Example two should.
+ */
 class ExampleTwoShould {
 
+    /**
+     * Sum numbers using float.
+     */
     @DisplayName("Repetitively sum using float")
     @Test
     void sumNumbersUsingFloat() {
@@ -22,6 +28,9 @@ class ExampleTwoShould {
         assertNotEquals(maxSalary, salary);
     }
 
+    /**
+     * Sum numbers using big decimals.
+     */
     @DisplayName("Repetitively sum using BigDecimal")
     @Test
     void sumNumbersUsingBigDecimals() {

@@ -8,10 +8,16 @@ import java.math.BigInteger;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+/**
+ * The type Example one should.
+ */
 class ExampleOneShould {
 
-    private Long primaryKeyFromDataBase = Long.MAX_VALUE;
+    private final Long primaryKeyFromDataBase = Long.MAX_VALUE;
 
+    /**
+     * Thrown an exception to transform long to integer.
+     */
     @DisplayName("Exception when try to associate the database pk value")
     @Test
     void thrownAnExceptionToTransformLongToInteger() {
@@ -19,13 +25,13 @@ class ExampleOneShould {
                 Integer.parseInt(primaryKeyFromDataBase.toString()));
     }
 
+    /**
+     * Transform long to big integer.
+     */
     @DisplayName("Accepted the database pk value")
     @Test
     void transformLongToBigInteger() {
         BigInteger myChosenType = new BigInteger(String.valueOf(primaryKeyFromDataBase));
         assertEquals(myChosenType.toString(), primaryKeyFromDataBase.toString());
     }
-
-
-
 }

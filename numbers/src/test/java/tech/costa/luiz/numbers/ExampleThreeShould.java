@@ -5,8 +5,14 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * The type Example three should.
+ */
 class ExampleThreeShould {
 
+    /**
+     * Store a small amount of items.
+     */
     @DisplayName("For a small amount use the appropriate number type")
     @Test
     void storeASmallAmountOfItems() {
