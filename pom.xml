@@ -10,6 +10,7 @@
         <module>reactive</module>
         <module>java-util</module>
         <module>numbers</module>
+        <module>cache-eviction-policies</module>
     </modules>
 
     <parent>
