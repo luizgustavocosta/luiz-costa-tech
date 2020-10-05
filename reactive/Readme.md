@@ -1,9 +1,26 @@
 # Agenda
 
-## Reactive in a nutshell
+1. Reactive in a nutshell
 
-## Working with Publisher and Subscriber
+2. Review of Reactor api
 
-## Design and run an api reactive
+3. Reactive api design and run
 
-## Consumes the api using a UI 
+4. Client consuming the api
+
+# Tech stack
+- WebFlux
+- Spring
+- Docker
+- Java
+- Cassandra/MongoDB TBD
+- JUnit5
+- Hamcrest
+- Maven
+- WebClient
+- Vaadin
+- HTML
+- JavaScript
+- Rest
+- Lombok
+- cURL
