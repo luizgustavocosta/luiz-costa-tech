@@ -2,38 +2,45 @@ package tech.costa.luiz.cache.lfu;
 
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.core.IsEqual.equalTo;
 
+/**
+ * The type Least frequently used test.
+ */
 class LeastFrequentlyUsedTest {
 
-    @Test void removeTheLeastNewLessUsed() {
-        int capacity = 3;
-        LeastFrequentlyUsed<Integer, Integer> cache = new LeastFrequentlyUsed<>(capacity);
-        // Add as annotation
-        cache.put(2, 2);
-        cache.put(1, 1);
+    /**
+     * The Capacity.
+     */
+    int capacity = 3;
 
-        System.out.println(cache.get(2));
-        System.out.println(cache.get(1));
-        System.out.println(cache.get(2));
+    /**
+     * Remove the less accessed.
+     */
+    @Test
+    void remove_the_less_accessed() {
+        LeastFrequentlyUsed<LeastFrequentlyUsed.News, LeastFrequentlyUsed.SocialMedia> cache = new LeastFrequentlyUsed<>(capacity);
 
-        cache.put(3, 3);
-        cache.put(4, 4);
+        final LeastFrequentlyUsed.News messiAndMarca = new LeastFrequentlyUsed.News("Messi reach 800 goals", "Marca");
+        final LeastFrequentlyUsed.News normalLifeElPais = new LeastFrequentlyUsed.News("The normal life restart today", "El País");
+        final LeastFrequentlyUsed.News springElPais = new LeastFrequentlyUsed.News("Spring starts today", "El País");
 
-        //1, 2 elements have access times, after 3, the cache is full, when 4 is added, 3 is eliminated.
-        System.out.println(cache.get(3));
-        System.out.println(cache.get(2));
-        //System.out.println(cache.get(1));
-        System.out.println(cache.get(4));
+        cache.put(messiAndMarca, new LeastFrequentlyUsed.SocialMedia("Twitter"));
+        cache.put(normalLifeElPais, new LeastFrequentlyUsed.SocialMedia("Facebook"));
+        cache.put(springElPais, new LeastFrequentlyUsed.SocialMedia("Instagram"));
 
-        cache.put(5, 5);
-        // Currently 2 visits 2 times, 1 visit once, 4 visits once, since the time of 4 is relatively new, 1 element is removed when 5 is placed.
-        System.out.println("-=-=-=-");
-        cache.getCache().entrySet().forEach(entry -> {
-            System.out.println(entry.getValue());
-        });
 
+        cache.get(messiAndMarca);
+        cache.get(messiAndMarca);
+        cache.get(springElPais);
+
+        final LeastFrequentlyUsed.News ronaldoAs = new LeastFrequentlyUsed.News("Ronaldo wins the Ballon D'or", "As");
+
+        cache.put(ronaldoAs, new LeastFrequentlyUsed.SocialMedia("Instagram"));
+
+        assertThat(3, is(equalTo(cache.size())));
 
     }
-
 }
