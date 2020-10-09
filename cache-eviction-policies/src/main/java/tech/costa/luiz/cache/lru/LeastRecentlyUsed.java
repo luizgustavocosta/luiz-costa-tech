@@ -6,6 +6,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 public class LeastRecentlyUsed<K,V> {
+
     private int MAX_SIZE;
     private final float LOAD_FACTORY = 0.75f;
 
