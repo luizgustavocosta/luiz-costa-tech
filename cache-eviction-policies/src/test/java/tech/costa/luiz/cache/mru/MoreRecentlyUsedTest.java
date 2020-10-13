@@ -1,51 +1,44 @@
 package tech.costa.luiz.cache.mru;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import tech.costa.luiz.cache.NewsDataSet;
+import tech.costa.luiz.cache.domain.News;
 
-import static tech.costa.luiz.cache.mru.MoreRecentlyUsed.*;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.IsEqual.equalTo;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
+/**
+ * The type More recently used test.
+ */
 class MoreRecentlyUsedTest {
 
-    MoreRecentlyUsed<Music> cacheMRU;
-    Music fimDeSemanaNoParque, likeARollingStone, imagine;
-    int cacheSize = 3;
-
-    @BeforeEach
-    @SuppressWarnings("unchecked")
-    void setUp() {
-        cacheMRU = new MoreRecentlyUsed<>(cacheSize);
-        fimDeSemanaNoParque = new Music("Fim de semana no parque", "Raio-X do Brasil", "Racionais Mc's");
-        likeARollingStone = new Music("Like a Rolling Stone", "Highway 61 Revisited", "Bob Dylan");
-        imagine = new Music("Imagine", "Imagine", "John Lennon");
-
-        cacheMRU.add(fimDeSemanaNoParque)
-                .add(likeARollingStone)
-                .add(imagine);
-
-    }
-
+    /**
+     * Discard first cached element.
+     */
     @Test
-    void invalidate() {
-    }
+    @SuppressWarnings("")
+    void discard_first_cached_element() {
+        int cacheSize = 3;
+        MoreRecentlyUsed<News> cacheStrategy = new MoreRecentlyUsed<>(cacheSize);
+        // Given
+        final NewsDataSet dataSet = NewsDataSet.getInstance();
 
-    @Test
-    void printKeyOrder() {
-        System.out.println(cacheMRU.toString());
-    }
+        cacheStrategy.add(dataSet.getSuarez())
+                .add(dataSet.getMessi())
+                .add(dataSet.getRakitic());
 
-    @Test
-    void prune() {
-    }
+        final News newsForMessi = cacheStrategy.get(dataSet.getMessi());
+        assertEquals(newsForMessi, dataSet.getMessi());
 
-    @Test
-    void put() {
-    }
+        // When
+        cacheStrategy.add(dataSet.getPjanic());
+        cacheStrategy.get(dataSet.getPjanic());
+        cacheStrategy.add(dataSet.getRonaldo());
 
-    @Test
-    void get() {
-        final Music music = cacheMRU.get(likeARollingStone);
-        System.out.println(cacheMRU);
-
+        // Then
+        assertThat(cacheSize, is(equalTo(cacheStrategy.size())));
+        // FIXME add more asserts
     }
 }

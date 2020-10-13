@@ -16,11 +16,11 @@ import java.util.stream.Collectors;
 public class FirstInFirstOut<K,V> {
 
     private final int maxSize;
-    private final float loadFactory = 0.75f;
+    private static final float loadFactory = 0.75f;
     /**
      * When false works as FIFO
      * */
-    private final boolean accessOrder = false;
+    private static final boolean accessOrder = false;
     private final Map<K, V> map;
 
     /**

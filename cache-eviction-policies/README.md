@@ -19,3 +19,6 @@ Discards, in contrast to LRU, the most recently used items first.
 ## Least Frequently Used (LFU): 
 Counts how often an item is needed. Those that are used least often are discarded first.
 ![](src/main/resources/LFU.png)
+
+References
+[Interview Cake](https://www.interviewcake.com/concept/java/lru-cache)

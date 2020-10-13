@@ -1,9 +1,8 @@
 package tech.costa.luiz.cache.lfu;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import tech.costa.luiz.cache.frequency.CacheStrategy;
+
+import java.util.*;
 
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
@@ -14,12 +13,10 @@ import static java.util.Objects.nonNull;
  * @param <K> the type parameter
  * @param <V> the type parameter
  */
-public class LeastFrequentlyUsed <K, V> {
+public class LeastFrequentlyUsed <K, V> implements CacheStrategy<K, V> {
 
     private final int capacity;
-
     private final Map<K, V> cache = new HashMap<>();
-
     private final Map<K, CountItem> countItemMap = new HashMap<>();
 
     /**
@@ -37,13 +34,14 @@ public class LeastFrequentlyUsed <K, V> {
      * @param key   the key
      * @param value the value
      */
+    @Override
     public void put(K key, V value) {
         V v = cache.get(key);
         if (isNull(v)) {
             if (capacity == cache.size()) {
                 removeElement();
             }
-            countItemMap.put(key, new CountItem(key, 1, System.currentTimeMillis()));
+            countItemMap.put(key, new CountItem(key, System.currentTimeMillis()));
         } else {
             addHitCount(key);
         }
@@ -56,6 +54,7 @@ public class LeastFrequentlyUsed <K, V> {
      * @param key the key
      * @return the v
      */
+    @Override
     public V get(K key) {
         V value = cache.get(key);
         if (nonNull(value)) {
@@ -65,15 +64,28 @@ public class LeastFrequentlyUsed <K, V> {
         return null;
     }
 
+    @Override
+    public Set<Map.Entry<K, V>> getAll() {
+        return cache.entrySet();
+    }
+
+    /**
+     * Remove element.
+     */
     private void removeElement() {
         CountItem countItem = Collections.min(countItemMap.values());
         cache.remove(countItem.key);
         countItemMap.remove(countItem.key);
     }
 
+    /**
+     * Add hit count.
+     * For each access increment the time and set the time
+     * @param key the key
+     */
     private void addHitCount(K key) {
         CountItem countItem = countItemMap.get(key);
-        countItem.count = countItem.count++;
+        countItem.count = countItem.count + 1;
         countItem.lastTime = System.currentTimeMillis();
     }
 
@@ -82,6 +94,7 @@ public class LeastFrequentlyUsed <K, V> {
      *
      * @return the cache
      */
+    @Override
     public Map<K, V> getCache() {
         return cache;
     }
@@ -100,18 +113,21 @@ public class LeastFrequentlyUsed <K, V> {
         return "LeastFrequentlyUsed{" +
                 "capacity=" + capacity +
                 ", cache=" + cache +
-                ", countItemMap=" + countItemMap +
+                ", countItemMap=" + countItemMap.size() +
                 '}';
     }
 
+    /**
+     * The type Count item.
+     */
     private class CountItem implements Comparable<CountItem> {
-        private K key;
+        private final K key;
         private int count;
         private long lastTime;
 
-        private CountItem(K key, int count, long lastAccess) {
+        private CountItem(K key, long lastAccess) {
             this.key = key;
-            this.count = count;
+            this.count = 1;
             this.lastTime = lastAccess;
         }
 
@@ -134,102 +150,6 @@ public class LeastFrequentlyUsed <K, V> {
         @Override
         public int hashCode() {
             return Objects.hash(key, count, lastTime);
-        }
-    }
-
-    /**
-     * The type News.
-     */
-    static class News {
-        private String title;
-        private String source;
-
-        /**
-         * Instantiates a new News.
-         *
-         * @param title  the title
-         * @param source the source
-         */
-        public News(String title, String source) {
-            this.title = title;
-            this.source = source;
-        }
-
-        /**
-         * Gets title.
-         *
-         * @return the title
-         */
-        public String getTitle() {
-            return title;
-        }
-
-        /**
-         * Sets title.
-         *
-         * @param title the title
-         */
-        public void setTitle(String title) {
-            this.title = title;
-        }
-
-        /**
-         * Gets source.
-         *
-         * @return the source
-         */
-        public String getSource() {
-            return source;
-        }
-
-        /**
-         * Sets source.
-         *
-         * @param source the source
-         */
-        public void setSource(String source) {
-            this.source = source;
-        }
-
-        @Override
-        public String toString() {
-            return "News{" +
-                    "title='" + title + '\'' +
-                    ", source='" + source + '\'' +
-                    '}';
-        }
-    }
-
-    /**
-     * The type Social media.
-     */
-    static class SocialMedia {
-
-        private final String name;
-
-        /**
-         * Instantiates a new Social media.
-         *
-         * @param name the name
-         */
-        public SocialMedia(String name) {
-            this.name = name;
-        }
-
-        /**
-         * Gets name.
-         *
-         * @return the name
-         */
-        public String getName() {
-            return name;
-        }
-
-        @Override
-        public String toString() {
-            return "SocialMedia{" +
-                    "name='" + name + '\'' +
-                    '}';
         }
     }
 }

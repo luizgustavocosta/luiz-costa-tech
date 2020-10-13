@@ -1,51 +1,61 @@
 package tech.costa.luiz.cache.lru;
 
+import tech.costa.luiz.cache.frequency.CacheStrategy;
+
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class LeastRecentlyUsed<K,V> {
+public class LeastRecentlyUsed<K,V> implements CacheStrategy<K,V> {
 
-    private int MAX_SIZE;
-    private final float LOAD_FACTORY = 0.75f;
-
-    private Map<K, V> map;
+    private final int maxSize;
+    private static final float LOAD_FACTORY = 0.75f;
+    private final Map<K, V> cache;
 
     public LeastRecentlyUsed(int cacheSize) {
-        MAX_SIZE = cacheSize;
-        int capacity = (int)Math.ceil(MAX_SIZE / LOAD_FACTORY) + 1; // Explain better way using this.
+        maxSize = cacheSize;
+        int capacity = (int)Math.ceil(maxSize / LOAD_FACTORY) + 1; // Explain better way using this.
         /*
-         * The third parameter is set to true, the representative linkedlist sorted in order of access, it can be used as a cache LRU
-         * The third parameter is set to false, for insertion sort order, as FIFO buffer
+         * true, the representative LinkedList sorted in order of access, it can be used as a cache LRU
+         * false, for insertion sort order, as FIFO buffer
          */
-        map = new LinkedHashMap<K, V>(capacity, LOAD_FACTORY, true) {
+        cache = new LinkedHashMap<K, V>(capacity, LOAD_FACTORY, true) {
             @Override
             protected boolean removeEldestEntry(Map.Entry<K, V> eldest) {
-                return size() > MAX_SIZE;
+                return size() > maxSize;
             }
         };
     }
 
-    public synchronized void put(K key, V value) {
-        map.put(key, value);
+    @Override
+    public void put(K key, V value) {
+        cache.put(key, value);
     }
 
-    public synchronized V get(K key) {
-        return map.get(key);
+    @Override
+    public V get(K key) {
+        return cache.get(key);
     }
 
-    public synchronized void remove(K key) {
-        map.remove(key);
+    private void remove(K key) {
+        //FIXME
+        cache.remove(key);
     }
 
-    public synchronized Set<Map.Entry<K, V>> getAll() {
-        return map.entrySet();
+    @Override
+    public Map<K, V> getCache() {
+        return cache;
+    }
+
+    @Override
+    public Set<Map.Entry<K, V>> getAll() {
+        return cache.entrySet();
     }
 
     @Override
     public String toString() {
-        return map.entrySet().stream()
+        return cache.entrySet().stream()
                 .map((element) -> String.format("%s: %s", element.getKey(), element.getValue()))
                 .collect(Collectors.joining());
     }

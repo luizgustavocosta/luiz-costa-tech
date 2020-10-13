@@ -9,14 +9,13 @@ import java.util.Set;
  * Applicability
  * https://stackoverflow.com/questions/5088128/why-does-cache-use-most-recently-used-mru-algorithm-as-evict-policy
  * https://searchstorage.techtarget.com/definition/cache-algorithm
- * @param <K> the type parameter
- * @param <V> the type parameter
  *
+ * @param <T> the type parameter
  */
 public class MoreRecentlyUsed<T> {
 
     private final int cacheSize;
-    private final Set<T> map;
+    private final Set<T> cache;
     private final LinkedList<T> items;
 
     /**
@@ -26,31 +25,45 @@ public class MoreRecentlyUsed<T> {
      */
     public MoreRecentlyUsed(int cacheSize) {
         this.cacheSize = cacheSize;
-        this.map = new LinkedHashSet<>(cacheSize);
+        this.cache = new LinkedHashSet<>(cacheSize);
         this.items = new LinkedList<>();
     }
 
+    /**
+     * Invalidate.
+     *
+     * @param type the type
+     */
     public void invalidate(T type) {
         items.remove(type);
-        map.remove(type);
+        cache.remove(type);
     }
 
+    /**
+     * Discard.
+     */
     public void discard() {
         final T remove = items.remove(getLastIndex());
-        map.remove(remove);
+        cache.remove(remove);
     }
 
     private int getLastIndex() {
         return items.size() - 1;
     }
 
+    /**
+     * Add more recently used.
+     *
+     * @param type the type
+     * @return the more recently used
+     */
     public MoreRecentlyUsed add(T type) {
         if (cacheSize == items.size()) {
             // Limit reached
             this.discard();
         }
         items.add(nextIndex(), type);
-        map.add(type);
+        cache.add(type);
         return this;
     }
 
@@ -62,13 +75,18 @@ public class MoreRecentlyUsed<T> {
         return items.isEmpty() ? 0 : items.size();
     }
 
+    /**
+     * Get t.
+     *
+     * @param key the key
+     * @return the t
+     */
     public T get(T key) {
         // Once is requested, the object is sent to tail
         if (items.remove(key)) {
-            //FIXME list.addLast(key);
             //list.add(getIndex(), map.get(key));
             items.addLast(key);
-            return map.stream()
+            return cache.stream()
                     .filter(currentType -> currentType.equals(key))
                     .findFirst()
                     .orElse(null);
@@ -80,31 +98,17 @@ public class MoreRecentlyUsed<T> {
     public String toString() {
         return "MoreRecentlyUsed{" +
                 "\ncacheSize=" + cacheSize +
-                //", map=" + map +
                 ",\n list=" + items +
                 '}';
     }
 
-    static class Music {
-        private final String name;
-        private final String album;
-        private final String author;
-
-
-        Music(String name, String album, String author) {
-            this.name = name;
-            this.album = album;
-            this.author = author;
-        }
-
-        @Override
-        public String toString() {
-            return "\nMusic{" +
-                    "name='" + name + '\'' +
-                    /*", album='" + album + '\'' +
-                    ", author='" + author + '\'' +*/
-                    '}';
-        }
+    /**
+     * Size int.
+     *
+     * @param <T> the type parameter
+     * @return the int
+     */
+    public <T> int size() {
+        return cache.size();
     }
-
 }
