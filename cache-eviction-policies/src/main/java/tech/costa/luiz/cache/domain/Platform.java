@@ -3,6 +3,7 @@ package tech.costa.luiz.cache.domain;
 /**
  * The enum Platform.
  */
+@Deprecated
 public enum Platform {
     /**
      * Twitter platform.

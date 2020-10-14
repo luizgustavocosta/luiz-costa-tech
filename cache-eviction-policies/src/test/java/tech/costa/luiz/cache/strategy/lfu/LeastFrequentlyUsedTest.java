@@ -2,18 +2,14 @@ package tech.costa.luiz.cache.strategy.lfu;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import tech.costa.luiz.cache.dataset.NewsDataSet;
-import tech.costa.luiz.cache.domain.News;
-import tech.costa.luiz.cache.domain.Platform;
-import tech.costa.luiz.cache.domain.SocialMedia;
 
 import java.util.Map;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.hasKey;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * The type Least frequently used test.
@@ -24,7 +20,12 @@ class LeastFrequentlyUsedTest {
     /**
      * The Capacity.
      */
-    int capacity = 3;
+
+    int id = 0;
+
+    String generateId(){
+        return String.valueOf(id++);
+    }
 
     /**
      * Remove the less accessed.
@@ -32,45 +33,50 @@ class LeastFrequentlyUsedTest {
     @DisplayName("Counts how often an item is needed. Those that are used least often are discarded first.")
     @Test
     void remove_the_less_accessed() {
-        LeastFrequentlyUsed<News, SocialMedia> cache = new LeastFrequentlyUsed<>(capacity);
         // Given
-        final NewsDataSet dataSet = NewsDataSet.getInstance();
+        int capacity = 3;
+        LeastFrequentlyUsed<String, String> cache = new LeastFrequentlyUsed<>(capacity);
+        final String ronaldinho = "Ronaldinho", neto = "neto",
+                messi = "Messi", coutinho = "coutinho",
+                terStegen = "Ter stegen";
 
-        dataSet.buildInitialCacheNews()
-                .forEach(news -> {
-                    Platform platform = Platform.INSTAGRAM;
-                    if (news.getTitle().contains("Messi")) {
-                        platform = Platform.TWITTER;
-                    } else if (news.getTitle().contains("Suarez")) {
-                        platform = Platform.FACEBOOK;
-                    }
-                    cache.put(news, new SocialMedia(platform));
-                });
+        String idCoutinho = generateId();
+        String idNeto = generateId();
+        String idMessi = generateId();
+
+        cache.put(idCoutinho, coutinho);
+        cache.put(idNeto, neto);
+        cache.put(idMessi, messi);
 
         // When
-        cache.get(dataSet.getMessi());
-        cache.get(dataSet.getMessi());
-        cache.get(dataSet.getRakitic());
+        cache.get(idMessi);
+        cache.get(idMessi);
+        cache.get(idCoutinho);
 
-        cache.put(dataSet.getPjanic(), new SocialMedia(Platform.INSTAGRAM));
-        cache.put(dataSet.getRonaldo(), new SocialMedia(Platform.INSTAGRAM));
+        String idRonaldinho = generateId();
+        String idTerStegen = generateId();
+
+        cache.put(idRonaldinho, ronaldinho);
+        cache.get(idNeto);
+        cache.put(idTerStegen, terStegen);
 
         int actualExpected = 3;
 
         // Then
-        final Map<News, LeastFrequentlyUsed<News, SocialMedia>.CountItem> countItemMap = cache.getCountItemMap();
-        final int countSize = countItemMap.size();
+        final int countSize = cache.size();
 
         assertThat(actualExpected, is(equalTo(cache.size())));
         assertThat(countSize, is(equalTo(cache.size())));
 
+        final Map<String, String> currentCache = cache.getCache();
+
         assertAll(() -> {
-            assertTrue(countItemMap.containsKey(dataSet.getRonaldo()));
-            assertThat(countItemMap.get(dataSet.getRonaldo()).getCount(), is(equalTo(0)));
-            assertTrue(countItemMap.containsKey(dataSet.getMessi()));
-            assertThat(countItemMap.get(dataSet.getMessi()).getCount(), is(equalTo(2)));
-            assertTrue(countItemMap.containsKey(dataSet.getRakitic()));
-            assertThat(countItemMap.get(dataSet.getRakitic()).getCount(), is(equalTo(1)));
+            assertThat(null, is(equalTo(cache.get(idNeto))));
+            assertThat(null, is(equalTo(cache.get(idRonaldinho))));
+
+            assertThat(currentCache, hasKey(idCoutinho));
+            assertThat(currentCache, hasKey(idMessi));
+            assertThat(currentCache, hasKey(idTerStegen));
         });
     }
 }

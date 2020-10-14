@@ -2,7 +2,6 @@ package tech.costa.luiz.cache.strategy.mru;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import tech.costa.luiz.cache.dataset.NewsDataSet;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
@@ -25,13 +24,9 @@ class MoreRecentlyUsedTest {
         int cacheSize = 3;
         MoreRecentlyUsed<String, String> cache = new MoreRecentlyUsed<>(cacheSize);
         // Given
-        final NewsDataSet dataSet = NewsDataSet.getInstance();
-
         final String ronaldinho = "Ronaldinho", neto = "neto",
                 messi = "Messi", coutinho = "coutinho",
                 terStegen = "Ter stegen";
-
-        final String midfield = "midfield", goalkeeper = "goalkeeper", forward = "Forward";
 
         String idCoutinho = generateId();
         String idNeto = generateId();

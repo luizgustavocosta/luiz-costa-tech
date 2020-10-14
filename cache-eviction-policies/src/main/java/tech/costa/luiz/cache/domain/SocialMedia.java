@@ -3,6 +3,7 @@ package tech.costa.luiz.cache.domain;
 /**
  * The type Social media.
  */
+@Deprecated
 public class SocialMedia {
 
     private final Platform Platform;

@@ -1,5 +1,6 @@
 package tech.costa.luiz.cache.domain;
 
+@Deprecated
 public enum Source {
     /**
      * Marca source.

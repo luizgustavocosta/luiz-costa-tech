@@ -3,6 +3,7 @@ package tech.costa.luiz.cache.domain;
 /**
  * The type News.
  */
+@Deprecated
 public class News {
     private String title;
     private Source source;
