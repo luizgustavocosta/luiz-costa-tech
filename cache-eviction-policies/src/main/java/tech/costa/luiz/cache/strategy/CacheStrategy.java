@@ -1,10 +1,10 @@
-package tech.costa.luiz.cache.frequency;
+package tech.costa.luiz.cache.strategy;
 
 import java.util.Map;
 import java.util.Set;
 
 /**
- * The interface Least frequency.
+ * The interface Cache strategy.
  *
  * @param <K> the type parameter
  * @param <V> the type parameter
@@ -40,5 +40,12 @@ public interface CacheStrategy<K,V> {
      * @return the cache
      */
     Map<K, V> getCache();
+
+    /**
+     * Size int.
+     *
+     * @return the int
+     */
+    int size();
 
 }

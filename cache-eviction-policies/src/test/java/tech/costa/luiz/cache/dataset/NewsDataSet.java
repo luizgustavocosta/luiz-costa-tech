@@ -1,4 +1,4 @@
-package tech.costa.luiz.cache;
+package tech.costa.luiz.cache.dataset;
 
 import tech.costa.luiz.cache.domain.News;
 import tech.costa.luiz.cache.domain.Source;
@@ -52,9 +52,7 @@ public class NewsDataSet {
      * @return the list
      */
     public List<News> buildInitialCacheNews() {
-        if (news.isEmpty()) {
-            news = Arrays.asList(getSuarez(), getMessi(), getRakitic());
-        }
+        news = Arrays.asList(getSuarez(), getMessi(), getRakitic());
         return news;
     }
 

@@ -1,9 +1,10 @@
-package tech.costa.luiz.cache.fifo;
+package tech.costa.luiz.cache.strategy.fifo;
+
+import tech.costa.luiz.cache.strategy.CacheStrategy;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 // Example from https://www.programmersought.com/article/35722271759/
 
@@ -13,15 +14,10 @@ import java.util.stream.Collectors;
  * @param <K> the type parameter
  * @param <V> the type parameter
  */
-public class FirstInFirstOut<K,V> {
+public class FirstInFirstOut<K,V> implements CacheStrategy<K,V> {
 
     private final int maxSize;
-    private static final float loadFactory = 0.75f;
-    /**
-     * When false works as FIFO
-     * */
-    private static final boolean accessOrder = false;
-    private final Map<K, V> map;
+    private final Map<K, V> cache;
 
     /**
      * Instantiates a new First in first out.
@@ -29,9 +25,11 @@ public class FirstInFirstOut<K,V> {
      * @param cacheSize the cache size
      */
     public FirstInFirstOut(int cacheSize) {
-        maxSize = cacheSize;
-        int capacity = (int) Math.ceil(maxSize / loadFactory) + 1;
-        map = new LinkedHashMap<K, V>(capacity, loadFactory, accessOrder) {
+        this.maxSize = cacheSize;
+        /**
+         * When false works as FIFO (First In First Out)
+         * */
+        cache = new LinkedHashMap<K, V>(cacheSize, 0.75f,false) {
             @Override
             protected boolean removeEldestEntry(Map.Entry<K, V> eldest) {
                 return size() > maxSize;
@@ -45,8 +43,9 @@ public class FirstInFirstOut<K,V> {
      * @param key   the key
      * @param value the value
      */
+    @Override
     public synchronized void put(K key, V value) {
-        map.put(key, value);
+        cache.put(key, value);
     }
 
     /**
@@ -55,8 +54,9 @@ public class FirstInFirstOut<K,V> {
      * @param key the key
      * @return the v
      */
+    @Override
     public synchronized V get(K key) {
-        return map.get(key);
+        return cache.get(key);
     }
 
     /**
@@ -65,7 +65,7 @@ public class FirstInFirstOut<K,V> {
      * @param key the key
      */
     public synchronized void remove(K key) {
-        map.remove(key);
+        cache.remove(key);
     }
 
     /**
@@ -73,8 +73,18 @@ public class FirstInFirstOut<K,V> {
      *
      * @return the all
      */
+    @Override
     public synchronized Set<Map.Entry<K, V>> getAll() {
-        return map.entrySet();
+        return cache.entrySet();
+    }
+
+    /**
+     *  Get Cache
+     * @return Map
+     */
+    @Override
+    public Map<K, V> getCache() {
+        return cache;
     }
 
     /**
@@ -82,16 +92,16 @@ public class FirstInFirstOut<K,V> {
      *
      * @return the int
      */
+    @Override
     public int size() {
-        return map.size();
+        return cache.size();
     }
 
     @Override
     public String toString() {
-        return map
-                .entrySet()
-                .stream()
-                .map(entryKey -> String.format("%s: %s%n", entryKey.getKey(), entryKey.getValue()))
-                .collect(Collectors.joining());
+        return "FirstInFirstOut{" +
+                "maxSize=" + maxSize +
+                ", cache=" + cache +
+                '}';
     }
 }

@@ -1,21 +1,35 @@
-package tech.costa.luiz.cache.lru;
+package tech.costa.luiz.cache.strategy.lru;
 
-import tech.costa.luiz.cache.frequency.CacheStrategy;
+import tech.costa.luiz.cache.strategy.CacheStrategy;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+/**
+ * The type Least recently used.
+ *
+ * @param <K> the type parameter
+ * @param <V> the type parameter
+ */
 public class LeastRecentlyUsed<K,V> implements CacheStrategy<K,V> {
 
     private final int maxSize;
     private static final float LOAD_FACTORY = 0.75f;
     private final Map<K, V> cache;
 
+    /**
+     * Instantiates a new Least recently used.
+     *
+     * @param cacheSize the cache size
+     */
     public LeastRecentlyUsed(int cacheSize) {
         maxSize = cacheSize;
-        int capacity = (int)Math.ceil(maxSize / LOAD_FACTORY) + 1; // Explain better way using this.
+        /**
+         *  Capacity is the amount of space that the object is currently using
+         */
+        int capacity = (int)Math.ceil(maxSize / LOAD_FACTORY) + 1;
         /*
          * true, the representative LinkedList sorted in order of access, it can be used as a cache LRU
          * false, for insertion sort order, as FIFO buffer
@@ -38,14 +52,14 @@ public class LeastRecentlyUsed<K,V> implements CacheStrategy<K,V> {
         return cache.get(key);
     }
 
-    private void remove(K key) {
-        //FIXME
-        cache.remove(key);
-    }
-
     @Override
     public Map<K, V> getCache() {
         return cache;
+    }
+
+    @Override
+    public int size() {
+        return cache.size();
     }
 
     @Override

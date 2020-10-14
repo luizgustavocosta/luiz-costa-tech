@@ -1,7 +1,8 @@
-package tech.costa.luiz.cache.lfu;
+package tech.costa.luiz.cache.strategy.lfu;
 
-import tech.costa.luiz.cache.frequency.CacheStrategy;
+import tech.costa.luiz.cache.strategy.CacheStrategy;
 
+import java.time.Clock;
 import java.util.*;
 
 import static java.util.Objects.isNull;
@@ -15,17 +16,17 @@ import static java.util.Objects.nonNull;
  */
 public class LeastFrequentlyUsed <K, V> implements CacheStrategy<K, V> {
 
-    private final int capacity;
+    private final int maxSize;
     private final Map<K, V> cache = new HashMap<>();
     private final Map<K, CountItem> countItemMap = new HashMap<>();
 
     /**
      * Instantiates a new Least frequently used.
      *
-     * @param capacity the capacity
+     * @param maxSize the capacity
      */
-    public LeastFrequentlyUsed(int capacity) {
-        this.capacity = capacity;
+    public LeastFrequentlyUsed(int maxSize) {
+        this.maxSize = maxSize;
     }
 
     /**
@@ -38,10 +39,10 @@ public class LeastFrequentlyUsed <K, V> implements CacheStrategy<K, V> {
     public void put(K key, V value) {
         V v = cache.get(key);
         if (isNull(v)) {
-            if (capacity == cache.size()) {
+            if (maxSize == cache.size()) {
                 removeElement();
             }
-            countItemMap.put(key, new CountItem(key, System.currentTimeMillis()));
+            countItemMap.put(key, new CountItem(key, Clock.systemUTC().millis()));
         } else {
             addHitCount(key);
         }
@@ -70,7 +71,7 @@ public class LeastFrequentlyUsed <K, V> implements CacheStrategy<K, V> {
     }
 
     /**
-     * Remove element.
+     * Remove the element less requested
      */
     private void removeElement() {
         CountItem countItem = Collections.min(countItemMap.values());
@@ -86,7 +87,7 @@ public class LeastFrequentlyUsed <K, V> implements CacheStrategy<K, V> {
     private void addHitCount(K key) {
         CountItem countItem = countItemMap.get(key);
         countItem.count = countItem.count + 1;
-        countItem.lastTime = System.currentTimeMillis();
+        countItem.lastTime = Clock.systemUTC().millis();
     }
 
     /**
@@ -111,30 +112,57 @@ public class LeastFrequentlyUsed <K, V> implements CacheStrategy<K, V> {
     @Override
     public String toString() {
         return "LeastFrequentlyUsed{" +
-                "capacity=" + capacity +
+                "capacity=" + maxSize +
                 ", cache=" + cache +
                 ", countItemMap=" + countItemMap.size() +
                 '}';
     }
 
     /**
-     * The type Count item.
+     * Gets count item map.
+     *
+     * @return the count item map
      */
-    private class CountItem implements Comparable<CountItem> {
+    public Map<K, CountItem> getCountItemMap() {
+        return countItemMap;
+    }
+
+    /**
+     * The type Count item.
+     * Used for maintain the item more accessed in the map
+     */
+    class CountItem implements Comparable<CountItem> {
         private final K key;
         private int count;
         private long lastTime;
 
         private CountItem(K key, long lastAccess) {
             this.key = key;
-            this.count = 1;
             this.lastTime = lastAccess;
+        }
+
+        /**
+         * Gets key.
+         *
+         * @return the key
+         */
+        public K getKey() {
+            return key;
         }
 
         @Override
         public int compareTo(CountItem other) {
-            int compare = Integer.compare(this.count, other.count);
-            return compare == 0 ? Long.compare(this.lastTime, other.lastTime) : compare;
+            int count = Integer.compare(this.count, other.count);
+            return count == 0 ? Long.compare(this.lastTime, other.lastTime) : count;
+        }
+
+        /**
+         * Gets count.
+         *
+         * @return the count
+         */
+        public int getCount() {
+            return count;
         }
 
         @Override
@@ -150,6 +178,14 @@ public class LeastFrequentlyUsed <K, V> implements CacheStrategy<K, V> {
         @Override
         public int hashCode() {
             return Objects.hash(key, count, lastTime);
+        }
+
+        @Override
+        public String toString() {
+            return "CountItem{" +
+                    "key=" + key +
+                    ", count=" + count +
+                    '}';
         }
     }
 }

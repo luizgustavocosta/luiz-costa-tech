@@ -1,5 +1,8 @@
 package tech.costa.luiz.cache.domain;
 
+/**
+ * The type News.
+ */
 public class News {
     private String title;
     private Source source;
@@ -22,15 +25,6 @@ public class News {
      */
     public String getTitle() {
         return title;
-    }
-
-    /**
-     * Sets title.
-     *
-     * @param title the title
-     */
-    public void setTitle(String title) {
-        this.title = title;
     }
 
     /**

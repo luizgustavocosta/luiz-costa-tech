@@ -1,8 +1,9 @@
-package tech.costa.luiz.cache.lru;
+package tech.costa.luiz.cache.strategy.lru;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import tech.costa.luiz.cache.NewsDataSet;
+import tech.costa.luiz.cache.dataset.NewsDataSet;
 import tech.costa.luiz.cache.domain.News;
 import tech.costa.luiz.cache.domain.Platform;
 import tech.costa.luiz.cache.domain.SocialMedia;
@@ -16,18 +17,35 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.junit.jupiter.api.Assertions.assertLinesMatch;
 
+/**
+ * The type Least recently used test.
+ */
+@DisplayName("LRU")
 class LeastRecentlyUsedTest {
 
+    /**
+     * The Lru.
+     */
     LeastRecentlyUsed<String, String> lru;
+    /**
+     * The Capacity.
+     */
     int capacity = 3;
 
+    /**
+     * Sets up.
+     */
     @BeforeEach
     void setUp() {
         lru = new LeastRecentlyUsed<>(3);
     }
 
+    /**
+     * Discards the least recently used items first.
+     */
+    @DisplayName("Discards the least recently used items first.")
     @Test
-    void remove_the_less_accessed() {
+    void discard_the_least_recently_used_first() {
         LeastRecentlyUsed<News, SocialMedia> cache = new LeastRecentlyUsed<>(capacity);
 
         // Given

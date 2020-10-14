@@ -1,4 +1,4 @@
-package tech.costa.luiz.cache.fifo;
+package tech.costa.luiz.cache.strategy.fifo;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -16,12 +16,13 @@ import static org.junit.jupiter.api.Assertions.assertLinesMatch;
 /**
  * The type First in first out test.
  */
+@DisplayName("FIFO")
 class FirstInFirstOutTest {
 
     /**
      * The Fifo cache.
      */
-    FirstInFirstOut<String, String> fifoCache;
+    FirstInFirstOut<String, String> cache;
     /**
      * The Cache size.
      */
@@ -32,12 +33,13 @@ class FirstInFirstOutTest {
      */
     @BeforeEach
     void setUp() {
-        fifoCache = new FirstInFirstOut<>(cacheSize);
-        fifoCache.put("9", "Suarez");
-        fifoCache.put("10", "Messi");
-        fifoCache.put("8", "Rakitic");
-        fifoCache.put("8", "Pjanić");
-        fifoCache.put("9", "Ronaldo");
+        cache = new FirstInFirstOut<>(cacheSize);
+
+        cache.put("Midfield", "Coutinho");
+        cache.put("Goalkeeper", "Neto");
+        cache.put("Forward", "Messi");
+        cache.put("Midfield", "Ronaldinho");
+        cache.put("Goalkeeper", "Ter stegen");
     }
 
     /**
@@ -46,7 +48,7 @@ class FirstInFirstOutTest {
     @Test
     @DisplayName("Respect the cache size")
     void should_respect_the_cache_size() {
-        assertThat(cacheSize, is(equalTo(fifoCache.size())));
+        assertThat(cacheSize, is(equalTo(cache.size())));
     }
 
     /**
@@ -55,11 +57,11 @@ class FirstInFirstOutTest {
     @Test
     @DisplayName("Remove the oldest elements when reach the limit")
     void should_remove_elements_when_reach_the_limit() {
-        final List<String> actualLines = fifoCache.getAll().stream()
+        final List<String> actualLines = cache.getAll().stream()
                 .map(entrySet -> String.format("%s:%s", entrySet.getKey(), entrySet.getValue()))
                 .collect(Collectors.toList());
 
-        List<String> expectedLines = Arrays.asList("9:Ronaldo","10:Messi", "8:Pjanić");
+        List<String> expectedLines = Arrays.asList("Midfield:Ronaldinho", "Goalkeeper:Ter stegen", "Forward:Messi");
         assertLinesMatch(expectedLines, actualLines);
     }
 
