@@ -2,11 +2,13 @@ package tech.costa.luiz.cache.strategy.mru;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import tech.costa.luiz.cache.domain.Player;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.junit.jupiter.api.Assertions.*;
+import static tech.costa.luiz.cache.dataset.PlayerDataSet.*;
 
 /**
  * The type More recently used test.
@@ -14,7 +16,6 @@ import static org.junit.jupiter.api.Assertions.*;
 @DisplayName("MRU")
 class MoreRecentlyUsedTest {
 
-    int id = 0;
     /**
      * Discard first cached element.
      */
@@ -22,41 +23,37 @@ class MoreRecentlyUsedTest {
     @Test
     void discard_first_cached_element() {
         int cacheSize = 3;
-        MoreRecentlyUsed<String, String> cache = new MoreRecentlyUsed<>(cacheSize);
+        MoreRecentlyUsed<String, Player> cache = new MoreRecentlyUsed<>(cacheSize);
+
         // Given
-        final String ronaldinho = "Ronaldinho", neto = "neto",
-                messi = "Messi", coutinho = "coutinho",
-                terStegen = "Ter stegen";
+        Player coutinho = getCoutinho();
+        Player neto = getNeto();
+        Player messi = getMessi();
 
-        String idCoutinho = generateId();
-        String idNeto = generateId();
-        String idMessi = generateId();
-
-        cache.put(idCoutinho, coutinho);
-        cache.put(idNeto, neto);
-        cache.put(idMessi, messi);
+        cache.put(coutinho.getId(), coutinho);
+        cache.put(neto.getId(), neto);
+        cache.put(messi.getId(), messi);
 
         // When
-        String idRonaldinho = generateId();
-        String idTerStegen = generateId();
+        cache.get(messi.getId());
+        cache.get(messi.getId());
+        cache.get(coutinho.getId());
 
-        cache.put(idRonaldinho, ronaldinho);
-        cache.get(idNeto);
-        cache.put(idTerStegen, terStegen);
+        Player ronaldinho = getRonaldinho();
+        Player terStegen = getTerStegen();
+
+        cache.put(ronaldinho.getId(), ronaldinho);
+        cache.put(terStegen.getId(), terStegen);
 
         // Then
         assertThat(cacheSize, is(equalTo(cache.size())));
 
         assertAll(() -> {
-            assertNotNull(cache.get(idCoutinho));
-            assertNotNull(cache.get(idRonaldinho));
-            assertNotNull(cache.get(idTerStegen));
-            assertNull(cache.get(idMessi));
-            assertNull(cache.get(idNeto));
+            assertNotNull(cache.get(terStegen.getId()));
+            assertNotNull(cache.get(neto.getId()));
+            assertNotNull(cache.get(messi.getId()));
+            assertNull(cache.get(coutinho.getId()));
+            assertNull(cache.get(ronaldinho.getId()));
         });
-    }
-
-    String generateId(){
-        return String.valueOf(id++);
     }
 }

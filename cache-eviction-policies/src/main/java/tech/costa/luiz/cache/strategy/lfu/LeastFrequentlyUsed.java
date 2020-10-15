@@ -4,6 +4,7 @@ import tech.costa.luiz.cache.strategy.CacheStrategy;
 
 import java.time.Clock;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
@@ -17,8 +18,8 @@ import static java.util.Objects.nonNull;
 public class LeastFrequentlyUsed <K, V> implements CacheStrategy<K, V> {
 
     private final int maxSize;
-    private final Map<K, V> cache = new HashMap<>();
-    private final Map<K, CountItem> countItemMap = new HashMap<>();
+    private final Map<K, V> cache = new ConcurrentHashMap<>();
+    private final Map<K, CountItem> countItemMap = new ConcurrentHashMap<>();
 
     /**
      * Instantiates a new Least frequently used.

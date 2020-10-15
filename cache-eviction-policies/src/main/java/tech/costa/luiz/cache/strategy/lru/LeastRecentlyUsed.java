@@ -5,7 +5,6 @@ import tech.costa.luiz.cache.strategy.CacheStrategy;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * The type Least recently used.
@@ -69,8 +68,9 @@ public class LeastRecentlyUsed<K,V> implements CacheStrategy<K,V> {
 
     @Override
     public String toString() {
-        return cache.entrySet().stream()
-                .map((element) -> String.format("%s: %s", element.getKey(), element.getValue()))
-                .collect(Collectors.joining());
+        return "LeastRecentlyUsed{" +
+                "maxSize=" + maxSize +
+                ", cache=" + cache +
+                '}';
     }
 }

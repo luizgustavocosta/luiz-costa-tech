@@ -1,21 +1,17 @@
 package tech.costa.luiz.cache.strategy.lru;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import tech.costa.luiz.cache.dataset.NewsDataSet;
-import tech.costa.luiz.cache.domain.News;
-import tech.costa.luiz.cache.domain.Platform;
-import tech.costa.luiz.cache.domain.SocialMedia;
+import tech.costa.luiz.cache.domain.Player;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Map;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.hasKey;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.core.IsEqual.equalTo;
-import static org.junit.jupiter.api.Assertions.assertLinesMatch;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static tech.costa.luiz.cache.dataset.PlayerDataSet.*;
 
 /**
  * The type Least recently used test.
@@ -24,67 +20,52 @@ import static org.junit.jupiter.api.Assertions.assertLinesMatch;
 class LeastRecentlyUsedTest {
 
     /**
-     * The Lru.
-     */
-    LeastRecentlyUsed<String, String> lru;
-    /**
-     * The Capacity.
-     */
-    int capacity = 3;
-
-    /**
-     * Sets up.
-     */
-    @BeforeEach
-    void setUp() {
-        lru = new LeastRecentlyUsed<>(3);
-    }
-
-    /**
      * Discards the least recently used items first.
      */
     @DisplayName("Discards the least recently used items first.")
     @Test
     void discard_the_least_recently_used_first() {
-        LeastRecentlyUsed<News, SocialMedia> cache = new LeastRecentlyUsed<>(capacity);
+        // Given
+        int capacity = 3;
+        LeastRecentlyUsed<String, Player> cache = new LeastRecentlyUsed<>(capacity);
 
         // Given
-        final NewsDataSet dataSet = NewsDataSet.getInstance();
+        Player coutinho = getCoutinho();
+        Player neto = getNeto();
+        Player messi = getMessi();
 
-        dataSet.buildInitialCacheNews()
-                .forEach(news -> {
-                    Platform platform = Platform.INSTAGRAM;
-                    if (news.getTitle().contains("Messi")) {
-                        platform = Platform.TWITTER;
-                    } else if (news.getTitle().contains("Suarez")) {
-                        platform = Platform.FACEBOOK;
-                    }
-                    cache.put(news, new SocialMedia(platform));
-                });
+        cache.put(coutinho.getId(), coutinho);
+        cache.put(neto.getId(), neto);
+        cache.put(messi.getId(), messi);
 
         // When
-        cache.get(dataSet.getMessi());
-        cache.get(dataSet.getMessi());
-        cache.get(dataSet.getRakitic());
+        cache.get(messi.getId());
+        cache.get(messi.getId());
+        cache.get(coutinho.getId());
 
-        cache.put(dataSet.getPjanic(), new SocialMedia(Platform.INSTAGRAM));
-        cache.put(dataSet.getRonaldo(), new SocialMedia(Platform.INSTAGRAM));
+        Player ronaldinho = getRonaldinho();
+        Player terStegen = getTerStegen();
+
+        cache.put(ronaldinho.getId(), ronaldinho);
+        cache.put(terStegen.getId(), terStegen);
 
         int actualExpected = 3;
 
         // Then
-        assertThat(actualExpected, is(equalTo(cache.getCache().size())));
-        final List<String> lru = cache.getCache()
-                .entrySet().stream()
-                .map(news -> String.join(",", news.getKey().getTitle(), news.getValue().getPlatform().name()))
-                .collect(Collectors.toList());
+        final int countSize = cache.size();
 
+        assertThat(actualExpected, is(equalTo(cache.size())));
+        assertThat(countSize, is(equalTo(cache.size())));
 
-        List<String> expectedLines = Arrays.asList(
-                "Rakitic wants to fulfil his Barcelona contract,INSTAGRAM",
-                "Pjanic ha detto sì: accordo col Barça. La Juve vuole Arthur, ma i catalani offrono Rakitic o Vidal,INSTAGRAM",
-                "Cristiano Ronaldo for the Ballon d'Or?,INSTAGRAM");
+        final Map<String, Player> currentCache = cache.getCache();
 
-        assertLinesMatch(expectedLines, lru);
+        assertAll(() -> {
+            assertThat(null, is(equalTo(cache.get(neto.getId()))));
+            assertThat(null, is(equalTo(cache.get(messi.getId()))));
+
+            assertThat(currentCache, hasKey(coutinho.getId()));
+            assertThat(currentCache, hasKey(ronaldinho.getId()));
+            assertThat(currentCache, hasKey(terStegen.getId()));
+        });
     }
 }

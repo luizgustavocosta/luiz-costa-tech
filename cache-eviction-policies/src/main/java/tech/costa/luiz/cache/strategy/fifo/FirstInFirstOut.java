@@ -7,7 +7,6 @@ import java.util.Map;
 import java.util.Set;
 
 // Example from https://www.programmersought.com/article/35722271759/
-
 /**
  * The type First in first out.
  *

@@ -2,6 +2,7 @@ package tech.costa.luiz.cache.strategy.lfu;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import tech.costa.luiz.cache.domain.Player;
 
 import java.util.Map;
 
@@ -10,6 +11,7 @@ import static org.hamcrest.Matchers.hasKey;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.junit.jupiter.api.Assertions.assertAll;
+import static tech.costa.luiz.cache.dataset.PlayerDataSet.*;
 
 /**
  * The type Least frequently used test.
@@ -35,30 +37,27 @@ class LeastFrequentlyUsedTest {
     void remove_the_less_accessed() {
         // Given
         int capacity = 3;
-        LeastFrequentlyUsed<String, String> cache = new LeastFrequentlyUsed<>(capacity);
-        final String ronaldinho = "Ronaldinho", neto = "neto",
-                messi = "Messi", coutinho = "coutinho",
-                terStegen = "Ter stegen";
+        LeastFrequentlyUsed<String, Player> cache = new LeastFrequentlyUsed<>(capacity);
 
-        String idCoutinho = generateId();
-        String idNeto = generateId();
-        String idMessi = generateId();
+        // Given
+        Player coutinho = getCoutinho();
+        Player neto = getNeto();
+        Player messi = getMessi();
 
-        cache.put(idCoutinho, coutinho);
-        cache.put(idNeto, neto);
-        cache.put(idMessi, messi);
+        cache.put(coutinho.getId(), coutinho);
+        cache.put(neto.getId(), neto);
+        cache.put(messi.getId(), messi);
 
         // When
-        cache.get(idMessi);
-        cache.get(idMessi);
-        cache.get(idCoutinho);
+        cache.get(messi.getId());
+        cache.get(messi.getId());
+        cache.get(coutinho.getId());
 
-        String idRonaldinho = generateId();
-        String idTerStegen = generateId();
+        Player ronaldinho = getRonaldinho();
+        Player terStegen = getTerStegen();
 
-        cache.put(idRonaldinho, ronaldinho);
-        cache.get(idNeto);
-        cache.put(idTerStegen, terStegen);
+        cache.put(ronaldinho.getId(), ronaldinho);
+        cache.put(terStegen.getId(), terStegen);
 
         int actualExpected = 3;
 
@@ -68,15 +67,15 @@ class LeastFrequentlyUsedTest {
         assertThat(actualExpected, is(equalTo(cache.size())));
         assertThat(countSize, is(equalTo(cache.size())));
 
-        final Map<String, String> currentCache = cache.getCache();
+        final Map<String, Player> currentCache = cache.getCache();
 
         assertAll(() -> {
-            assertThat(null, is(equalTo(cache.get(idNeto))));
-            assertThat(null, is(equalTo(cache.get(idRonaldinho))));
+            assertThat(null, is(equalTo(cache.get(neto.getId()))));
+            assertThat(null, is(equalTo(cache.get(ronaldinho.getId()))));
 
-            assertThat(currentCache, hasKey(idCoutinho));
-            assertThat(currentCache, hasKey(idMessi));
-            assertThat(currentCache, hasKey(idTerStegen));
+            assertThat(currentCache, hasKey(coutinho.getId()));
+            assertThat(currentCache, hasKey(messi.getId()));
+            assertThat(currentCache, hasKey(terStegen.getId()));
         });
     }
 }

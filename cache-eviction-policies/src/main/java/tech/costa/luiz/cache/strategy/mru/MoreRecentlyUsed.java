@@ -2,17 +2,14 @@ package tech.costa.luiz.cache.strategy.mru;
 
 import tech.costa.luiz.cache.strategy.CacheStrategy;
 
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * The type More recently used.
  * Remove the most recent used. Replace the top of stack
- * https://stackoverflow.com/questions/5088128/why-does-cache-use-most-recently-used-mru-algorithm-as-evict-policy
- * https://searchstorage.techtarget.com/definition/cache-algorithm
- * https://spatnaik77.wordpress.com/2014/06/13/simple-lrumru-based-cache-in-java/
  *
  * @param <K> the type parameter
  * @param <V> the type parameter
@@ -20,7 +17,7 @@ import java.util.Set;
 public class MoreRecentlyUsed<K, V> implements CacheStrategy<K,V> {
 
     private final int cacheSize;
-    private final HashMap<K, V> cache;
+    private final Map<K, V> cache;
     private final LinkedList<K> items;
 
     /**
@@ -30,7 +27,7 @@ public class MoreRecentlyUsed<K, V> implements CacheStrategy<K,V> {
      */
     public MoreRecentlyUsed(int cacheSize) {
         this.cacheSize = cacheSize;
-        this.cache = new HashMap<>(cacheSize);
+        this.cache = new ConcurrentHashMap<>(cacheSize);
         this.items = new LinkedList<>();
     }
 
@@ -86,7 +83,6 @@ public class MoreRecentlyUsed<K, V> implements CacheStrategy<K,V> {
     /**
      * Size int.
      *
-     * @param <T> the type parameter
      * @return the int
      */
     @Override

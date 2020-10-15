@@ -15,7 +15,7 @@ import java.util.Set;
 public class LastInFirstOut<K,V> implements CacheStrategy<K,V> {
 
     private final Map<K, V> cache;
-    private int cacheSize;
+    private final int cacheSize;
     private K newest;
 
     /**
@@ -25,7 +25,7 @@ public class LastInFirstOut<K,V> implements CacheStrategy<K,V> {
      */
     public LastInFirstOut(int cacheSize) {
         this.cacheSize = cacheSize;
-        cache = new LinkedHashMap<K, V>(cacheSize);
+        cache = new LinkedHashMap<>(cacheSize);
     }
 
     @Override
@@ -41,7 +41,6 @@ public class LastInFirstOut<K,V> implements CacheStrategy<K,V> {
     public V get(K key) {
         return cache.get(key);
     }
-
 
     /**
      * Remove.

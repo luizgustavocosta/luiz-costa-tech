@@ -3,6 +3,7 @@ package tech.costa.luiz.cache.strategy.fifo;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import tech.costa.luiz.cache.domain.Player;
 
 import java.util.Arrays;
 import java.util.List;
@@ -12,6 +13,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.junit.jupiter.api.Assertions.assertLinesMatch;
+import static tech.costa.luiz.cache.dataset.PlayerDataSet.*;
 
 /**
  * The type First in first out test.
@@ -19,14 +21,23 @@ import static org.junit.jupiter.api.Assertions.assertLinesMatch;
 @DisplayName("FIFO")
 class FirstInFirstOutTest {
 
+
     /**
-     * The Fifo cache.
+     * The Cache.
      */
-    FirstInFirstOut<String, String> cache;
+    FirstInFirstOut<String, Player> cache;
     /**
      * The Cache size.
      */
     int cacheSize = 3;
+    /**
+     * The Players
+     */
+    Player coutinho = getCoutinho(),
+            neto = getNeto(),
+            messi = getMessi(),
+            ronaldinho = getRonaldinho(),
+            terStegen = getTerStegen();
 
     /**
      * Sets up.
@@ -34,12 +45,13 @@ class FirstInFirstOutTest {
     @BeforeEach
     void setUp() {
         cache = new FirstInFirstOut<>(cacheSize);
+        cache.put(coutinho.getId(), coutinho);
+        cache.put(neto.getId(), neto);
+        cache.put(messi.getId(), messi);
+        cache.put(ronaldinho.getId(), ronaldinho);
+        cache.put(terStegen.getId(), terStegen);
 
-        cache.put("Midfield", "Coutinho");
-        cache.put("Goalkeeper", "Neto");
-        cache.put("Forward", "Messi");
-        cache.put("Midfield", "Ronaldinho");
-        cache.put("Goalkeeper", "Ter stegen");
+
     }
 
     /**
@@ -58,10 +70,10 @@ class FirstInFirstOutTest {
     @DisplayName("Remove the oldest elements when reach the limit")
     void should_remove_elements_when_reach_the_limit() {
         final List<String> actualLines = cache.getAll().stream()
-                .map(entrySet -> String.format("%s:%s", entrySet.getKey(), entrySet.getValue()))
+                .map(entrySet -> String.format("%s:%s", entrySet.getKey(), entrySet.getValue().getName()))
                 .collect(Collectors.toList());
 
-        List<String> expectedLines = Arrays.asList("Midfield:Ronaldinho", "Goalkeeper:Ter stegen", "Forward:Messi");
+        List<String> expectedLines = Arrays.asList("8:Messi", "9:Ronaldinho", "10:Ter stegen");
         assertLinesMatch(expectedLines, actualLines);
     }
 
