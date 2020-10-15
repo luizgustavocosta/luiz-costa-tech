@@ -26,7 +26,7 @@ public class FirstInFirstOut<K,V> implements CacheStrategy<K,V> {
     public FirstInFirstOut(int cacheSize) {
         this.maxSize = cacheSize;
         /**
-         * When false works as FIFO (First In First Out)
+         * When accessor order is false, the LinkedList works as FIFO (First In First Out)
          * */
         cache = new LinkedHashMap<K, V>(cacheSize, 0.75f,false) {
             @Override

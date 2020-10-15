@@ -21,18 +21,8 @@ import static tech.costa.luiz.cache.dataset.PlayerDataSet.*;
 @DisplayName("FIFO")
 class FirstInFirstOutTest {
 
-
-    /**
-     * The Cache.
-     */
-    FirstInFirstOut<String, Player> cache;
-    /**
-     * The Cache size.
-     */
     int cacheSize = 3;
-    /**
-     * The Players
-     */
+    FirstInFirstOut<String, Player> cache;
     Player coutinho = getCoutinho(),
             neto = getNeto(),
             messi = getMessi(),
@@ -50,8 +40,6 @@ class FirstInFirstOutTest {
         cache.put(messi.getId(), messi);
         cache.put(ronaldinho.getId(), ronaldinho);
         cache.put(terStegen.getId(), terStegen);
-
-
     }
 
     /**
