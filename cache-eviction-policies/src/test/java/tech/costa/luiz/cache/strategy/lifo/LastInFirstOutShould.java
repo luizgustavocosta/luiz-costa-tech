@@ -28,17 +28,19 @@ class LastInFirstOutShould {
     void evicts_most_recently_element() {
         int cacheSize = 3;
         LastInFirstOut<String, Player> cache = new LastInFirstOut<>(cacheSize);
-
+        // Creating players
         Player coutinho = getCoutinho();
         Player neto = getNeto();
         Player messi = getMessi();
         Player ronaldinho = getRonaldinho();
         Player terStegen = getTerStegen();
 
+        // Add the players to max list size
         cache.put(coutinho.getId(), coutinho);
         cache.put(neto.getId(), neto);
         cache.put(messi.getId(), messi);
 
+        // Add new players
         cache.put(ronaldinho.getId(), ronaldinho);
         cache.put(terStegen.getId(), terStegen);
 
