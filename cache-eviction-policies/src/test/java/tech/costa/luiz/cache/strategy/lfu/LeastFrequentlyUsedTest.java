@@ -20,16 +20,6 @@ import static tech.costa.luiz.cache.dataset.PlayerDataSet.*;
 class LeastFrequentlyUsedTest {
 
     /**
-     * The Capacity.
-     */
-
-    int id = 0;
-
-    String generateId(){
-        return String.valueOf(id++);
-    }
-
-    /**
      * Remove the less accessed.
      */
     @DisplayName("Counts how often an item is needed. Those that are used least often are discarded first.")
