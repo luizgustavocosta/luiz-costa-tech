@@ -11,6 +11,7 @@
         <module>java-util</module>
         <module>numbers</module>
         <module>cache-eviction-policies</module>
+        <module>cassandra</module>
     </modules>
 
     <parent>
