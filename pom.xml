@@ -12,6 +12,7 @@
         <module>numbers</module>
         <module>cache-eviction-policies</module>
         <module>cassandra</module>
+        <module>records</module>
     </modules>
 
     <parent>
