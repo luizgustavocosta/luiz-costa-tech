@@ -5,6 +5,7 @@ import io.reactivex.rxjava3.core.Flowable;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 
 public class AuctionRepository {
@@ -22,9 +23,11 @@ public class AuctionRepository {
     public @NonNull Flowable<Integer> findTop10Auctions() {
         return Flowable.range(1, 10)
                 .flatMap(value ->
-                        Flowable.just(value)
+                        Flowable.interval(2, TimeUnit.SECONDS) //Repeat each 2 seconds
+                                .map(Math::toIntExact)
                                 .subscribeOn(Schedulers.computation())
                                 .map(mapper -> mapper * mapper)
+
                 );
     }
 }

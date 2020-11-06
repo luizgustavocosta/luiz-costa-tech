@@ -16,12 +16,12 @@
         <module>reactive</module>
     </modules>
 
-    <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>`
-        <version>2.3.4.RELEASE</version>
-        <relativePath/> <!-- lookup parent from repository -->
-    </parent>
+<!--    <parent>-->
+<!--        <groupId>org.springframework.boot</groupId>-->
+<!--        <artifactId>spring-boot-starter-parent</artifactId>`-->
+<!--        <version>2.3.4.RELEASE</version>-->
+<!--        <relativePath/>-->
+<!--    </parent>-->
     <properties>
         <java.version>8</java.version>
         <junit.jupiter.version>5.5.2</junit.jupiter.version>
