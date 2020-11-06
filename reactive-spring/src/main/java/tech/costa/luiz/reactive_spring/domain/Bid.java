@@ -1,4 +1,4 @@
-package tech.costa.luiz.reactive.domain;
+package tech.costa.luiz.reactive_spring.domain;
 
 import java.time.ZonedDateTime;
 

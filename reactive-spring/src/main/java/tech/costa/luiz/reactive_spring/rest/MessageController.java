@@ -1,4 +1,4 @@
-package tech.costa.luiz.reactive.rest;
+package tech.costa.luiz.reactive_spring.rest;
 
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;

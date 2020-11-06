@@ -1,4 +1,4 @@
-package tech.costa.luiz.reactive.controller;
+package tech.costa.luiz.reactive_spring.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
