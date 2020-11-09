@@ -12,8 +12,19 @@ public class User extends PanacheEntityBase {
 
     @Id
     @SequenceGenerator(name = "usersSequence", sequenceName = "user_id_seq", allocationSize = 1, initialValue = 10)
-    @GeneratedValue(generator = "usersSequence")
-    private Integer id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    @Id
+//    @GeneratedValue(generator = "UUID")
+//    @GenericGenerator(
+//            name = "UUID",
+//            strategy = "org.hibernate.id.UUIDGenerator"
+//    )
+//    @Column(name = "ID", updatable = false, nullable = false)
+//    @ColumnDefault("random_uuid()")
+//    @Type(type = "uuid-char")
+//    private UUID id;
+
+    private Long id;
 
     @Column(length = 40, unique = false)
     private String name;
@@ -24,11 +35,11 @@ public class User extends PanacheEntityBase {
     public User() {
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
