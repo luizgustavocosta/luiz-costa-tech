@@ -4,6 +4,10 @@ import io.quarkus.vertx.web.Body;
 import io.smallrye.mutiny.Multi;
 import io.smallrye.mutiny.Uni;
 import io.vertx.core.http.HttpServerResponse;
+import org.eclipse.microprofile.metrics.MetricUnits;
+import org.eclipse.microprofile.metrics.annotation.Counted;
+import org.eclipse.microprofile.metrics.annotation.Gauge;
+import org.eclipse.microprofile.metrics.annotation.Timed;
 import tech.costa.luiz.reactive.model.user.User;
 import tech.costa.luiz.reactive.model.user.Users;
 
@@ -42,11 +46,18 @@ public class UserController {
 
     @GET
     @Path("")
+    @Counted(name = "performedChecks", description = "How many primality checks have been performed.")
+    @Timed(name = "checksTimer", description = "A measure how long it takes to perform the primality test.", unit = MetricUnits.MILLISECONDS)
     @Produces(MediaType.APPLICATION_JSON)
     public Multi<User> findAll() {
         return Multi.createFrom().items(users.streamAll());
     }
 
+
+    @Gauge(name = "Random metric", unit = MetricUnits.NONE, description = "Just trying")
+    public Long randomMetric() {
+        return 42L;
+    }
 
     @PUT
     @Path("{id}")
