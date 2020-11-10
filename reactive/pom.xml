@@ -10,7 +10,7 @@
 
     <properties>
         <rxjava.version>3.0.7</rxjava.version>
-        <java.version>14</java.version>
+        <java.version>1.8</java.version>
         <maven.compiler.version>3.8.1</maven.compiler.version>
         <quarkus-plugin.version>1.9.2.Final</quarkus-plugin.version>
         <quarkus.platform.artifact-id>quarkus-bom</quarkus.platform.artifact-id>
@@ -21,7 +21,6 @@
         <docker-plugin.version>0.28.0</docker-plugin.version>
         <maven.compiler.parameters>true</maven.compiler.parameters>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.home>/usr/local/apache-maven-3.3.9</maven.home>
     </properties>
 
     <dependencyManagement>
@@ -56,7 +55,6 @@
     </repositories>
     <dependencies>
         <!-- Reactive Database       -->
-        <!-- https://mvnrepository.com/artifact/io.r2dbc/r2dbc-h2 -->
         <dependency>
             <groupId>io.r2dbc</groupId>
             <artifactId>r2dbc-h2</artifactId>
@@ -92,7 +90,6 @@
         </dependency>
 
         <!-- Spring Data for CRUD-->
-        <!-- https://mvnrepository.com/artifact/org.springframework.data/spring-data-r2dbc -->
         <dependency>
             <groupId>org.springframework.data</groupId>
             <artifactId>spring-data-r2dbc</artifactId>
@@ -130,10 +127,10 @@
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-resteasy-jsonb</artifactId>
         </dependency>
-        <dependency>
-            <groupId>io.smallrye.reactive</groupId>
-            <artifactId>smallrye-mutiny-vertx-web-client</artifactId>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>io.smallrye.reactive</groupId>-->
+<!--            <artifactId>smallrye-mutiny-vertx-web-client</artifactId>-->
+<!--        </dependency>-->
         <dependency>
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-junit5</artifactId>
@@ -145,6 +142,11 @@
             <scope>test</scope>
         </dependency>
 
+        <!-- Metrics     -->
+        <dependency>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-smallrye-metrics</artifactId>
+        </dependency>
         <!--Tests -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
@@ -179,7 +181,6 @@
                 <configuration>
                     <source>${java.version}</source>
                     <target>${java.version}</target>
-                    <compilerArgs>--enable-preview</compilerArgs>
                 </configuration>
             </plugin>
             <plugin>
@@ -190,9 +191,6 @@
                         <java.util.logging.manager>org.jboss.logmanager.LogManager</java.util.logging.manager>
                         <maven.home>${maven.home}</maven.home>
                     </systemPropertyVariables>
-                    <argLine>
-                        --illegal-access=permit
-                    </argLine>
                 </configuration>
             </plugin>
             <plugin>

@@ -38,12 +38,11 @@ class UserTest implements WithAssertions {
     @ParameterizedTest(name = "Allow email {0}")
     @MethodSource("emailProvider")
     void shouldAllowValidEmails(String email)  {
-        final tech.costa.luiz.reactive.domain.User user =
-                new User(null, "John Doe", email);
+        final User user = User.UserBuilder.anUser().withName("John Doe").withEmail(email).build();
 
         assertAll(() -> {
             assertThat(user).as("Expected an instance").isNotNull();
-            assertThat(user.email()).as("E-mail should be set").isNotNull();
+            assertThat(user.getEmail()).as("E-mail should be set").isNotNull();
         });
     }
 }

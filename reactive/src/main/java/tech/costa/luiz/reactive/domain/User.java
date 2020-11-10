@@ -1,34 +1,62 @@
 package tech.costa.luiz.reactive.domain;
 
-import java.util.UUID;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import static java.util.Objects.isNull;
-
 /**
  * The type User.
  */
-public record User(String id, String name, String email) {
+public class User {
 
-    // Pattern for RFC 5322
-    private static final String regex = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$";
+    private String id;
+    private String name;
+    private String email;
 
-    /**
-     * Instantiates a new User.
-     *
-     * @param id    the id
-     * @param name  the name
-     * @param email the email
-     */
-    public User {
-        Pattern pattern = Pattern.compile(regex);
-        Matcher matcher = pattern.matcher(email);
-        if (matcher.matches()) {
-            id = isNull(id) ? UUID.randomUUID().toString() : id;
-        } else {
-            throw new IllegalArgumentException("Invalid e-mail "+email);
-        }
+    private User(String id, String name, String email) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
     }
 
+
+    public String getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public static final class UserBuilder {
+        private String id;
+        private String name;
+        private String email;
+
+        private UserBuilder() {
+        }
+
+        public static UserBuilder anUser() {
+            return new UserBuilder();
+        }
+
+        public UserBuilder withId(String id) {
+            this.id = id;
+            return this;
+        }
+
+        public UserBuilder withName(String name) {
+            this.name = name;
+            return this;
+        }
+
+        public UserBuilder withEmail(String email) {
+            this.email = email;
+            return this;
+        }
+
+        public User build() {
+            return new User(id, name, email);
+        }
+    }
 }
