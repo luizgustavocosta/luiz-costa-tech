@@ -11,8 +11,8 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-@Path("/auction")
-public class AddAuction {
+@Path("/auctions")
+public class AuctionResource {
 
     @Inject
     Vertx vertx;

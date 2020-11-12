@@ -8,10 +8,8 @@ import org.eclipse.microprofile.metrics.MetricUnits;
 import org.eclipse.microprofile.metrics.annotation.Counted;
 import org.eclipse.microprofile.metrics.annotation.Gauge;
 import org.eclipse.microprofile.metrics.annotation.Timed;
-import tech.costa.luiz.reactive.model.user.User;
-import tech.costa.luiz.reactive.model.user.Users;
+import tech.costa.luiz.reactive.entities.user.User;
 
-import javax.inject.Inject;
 import javax.transaction.Transactional;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -24,16 +22,13 @@ import static java.util.Objects.nonNull;
 public class UserController {
 
 
-    @Inject
-    Users users;
-
     @POST
     @Transactional
     public Uni<User> create(@Body User user, HttpServerResponse response) {
-        if (isNull(user) || nonNull(user.getId())) {
+        if (isNull(user) || nonNull(user.id)) {
             return Uni.createFrom().failure(new IllegalArgumentException("User id invalidly set on request."));
         }
-        users.persist(user);
+        User.persist(user);
         return Uni.createFrom().item(user);
     }
 
@@ -41,7 +36,7 @@ public class UserController {
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Uni<User> findOne(@PathParam("id") String id) {
-        return Uni.createFrom().item(users.findById(Long.parseLong(id)));
+        return Uni.createFrom().item(User.findById(Long.parseLong(id)));
     }
 
     @GET
@@ -50,7 +45,7 @@ public class UserController {
     @Timed(name = "checksTimer", description = "A measure how long it takes to perform the primality test.", unit = MetricUnits.MILLISECONDS)
     @Produces(MediaType.APPLICATION_JSON)
     public Multi<User> findAll() {
-        return Multi.createFrom().items(users.streamAll());
+        return Multi.createFrom().items(User.streamAll());
     }
 
 
@@ -63,10 +58,10 @@ public class UserController {
     @Path("{id}")
     @Transactional
     public Uni<User> update(@PathParam("id") String id, User user) {
-        if (isNull(user) || nonNull(user.getId())) {
+        if (isNull(user) || nonNull(user.id)) {
             return Uni.createFrom().failure(new IllegalArgumentException("User name was not set on request."));
         }
-        users.update("name='" + user.getName() + "', lastName='" + user.getLastName() + "' where id =?1", Long.valueOf(id));
+        User.update("name='" + user.name + "', lastName='" + user.lastName + "' where id =?1", Long.valueOf(id));
         return Uni.createFrom().item(user);
     }
 
@@ -74,7 +69,7 @@ public class UserController {
     @Path("{id}")
     @Transactional
     public Response delete(@org.jboss.resteasy.annotations.jaxrs.PathParam Long id) {
-        if (!users.deleteById(id)) {
+        if (!User.deleteById(id)) {
             throw new WebApplicationException("User with id of " + id + " does not exist.", 404);
         }
         return Response.status(204).build();
