@@ -1,11 +1,9 @@
 package tech.costa.luiz.reactive.actions.auctions;
 
 import io.smallrye.mutiny.Multi;
-import io.vertx.axle.core.Vertx;
 import org.jboss.resteasy.annotations.jaxrs.PathParam;
 import tech.costa.luiz.reactive.rxjava.AuctionRepository;
 
-import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -13,9 +11,6 @@ import javax.ws.rs.core.MediaType;
 
 @Path("/auctions")
 public class AuctionResource {
-
-    @Inject
-    Vertx vertx;
 
     @GET
     @Produces(MediaType.SERVER_SENT_EVENTS)

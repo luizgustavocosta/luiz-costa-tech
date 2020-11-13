@@ -1,4 +1,4 @@
-package tech.costa.luiz.reactive.entities.user;
+package tech.costa.luiz.reactive.service;
 
 import javax.enterprise.context.ApplicationScoped;
 

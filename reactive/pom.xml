@@ -60,7 +60,6 @@
             <artifactId>r2dbc-h2</artifactId>
             <version>0.8.4.RELEASE</version>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/io.r2dbc/r2dbc-client -->
         <dependency>
             <groupId>io.r2dbc</groupId>
             <artifactId>r2dbc-client</artifactId>

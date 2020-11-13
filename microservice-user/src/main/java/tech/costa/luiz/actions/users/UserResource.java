@@ -1,31 +1,27 @@
-package tech.costa.luiz.reactive.actions.users;
+package tech.costa.luiz.actions.users;
 
+import io.quarkus.panache.common.Sort;
 import io.quarkus.vertx.web.Body;
-import io.smallrye.mutiny.Multi;
 import io.smallrye.mutiny.Uni;
-import io.vertx.core.http.HttpServerResponse;
-import org.eclipse.microprofile.metrics.MetricUnits;
-import org.eclipse.microprofile.metrics.annotation.Counted;
-import org.eclipse.microprofile.metrics.annotation.Gauge;
-import org.eclipse.microprofile.metrics.annotation.Timed;
-import tech.costa.luiz.reactive.entities.user.User;
+import io.vertx.mutiny.core.http.HttpServerResponse;
+import tech.costa.luiz.model.user.User;
 
 import javax.transaction.Transactional;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.List;
 
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
 @Path("/users")
-public class UserController {
-
+public class UserResource {
 
     @POST
     @Transactional
-    public Uni<User> create(@Body User user, HttpServerResponse response) {
-        if (isNull(user) || nonNull(user.id)) {
+    public Uni<User> create(@Body tech.costa.luiz.model.user.User user, HttpServerResponse response) {
+        if (isNull(user)) {
             return Uni.createFrom().failure(new IllegalArgumentException("User id invalidly set on request."));
         }
         User.persist(user);
@@ -35,24 +31,17 @@ public class UserController {
     @GET
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Uni<User> findOne(@PathParam("id") String id) {
-        return Uni.createFrom().item(User.findById(Long.parseLong(id)));
+    public Uni<tech.costa.luiz.model.user.User> findOne(@PathParam("id") String id) {
+        return Uni.createFrom().item((User) User.findById(Long.parseLong(id)));
     }
 
     @GET
     @Path("")
-    @Counted(name = "performedChecks", description = "How many primality checks have been performed.")
-    @Timed(name = "checksTimer", description = "A measure how long it takes to perform the primality test.", unit = MetricUnits.MILLISECONDS)
     @Produces(MediaType.APPLICATION_JSON)
-    public Multi<User> findAll() {
-        return Multi.createFrom().items(User.streamAll());
+    public List<User> findAll() {
+        return User.findAll(Sort.by("name", "lastName")).list();
     }
 
-
-    @Gauge(name = "Random metric", unit = MetricUnits.NONE, description = "Just trying")
-    public Long randomMetric() {
-        return 42L;
-    }
 
     @PUT
     @Path("{id}")

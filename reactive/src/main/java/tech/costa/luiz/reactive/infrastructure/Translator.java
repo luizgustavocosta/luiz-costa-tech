@@ -3,7 +3,6 @@ package tech.costa.luiz.reactive.infrastructure;
 import org.eclipse.microprofile.metrics.annotation.Counted;
 
 import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
 
 
 @ApplicationScoped
