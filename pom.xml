@@ -15,6 +15,7 @@
         <module>records</module>
         <module>reactive</module>
         <module>microservice-user</module>
+        <module>reactive-db</module>
     </modules>
 
 <!--    <parent>-->

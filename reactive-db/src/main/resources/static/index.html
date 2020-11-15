@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Using Server-Sent Events</title>
+    <script>
+
+    var sse = new EventSource('http://localhost:8080/posts');
+sse.addEventListener('message', function(e) {
+  console.log(e);
+  var data = e.data;
+  if (!data) {
+      console.log('no data in event');
+      return;
+  }
+  if (data === 'finished') {
+      console.log('closing connection')
+      sse.close()
+  }
+   document.getElementById("result").innerHTML += "New time received from web server: " + event.data + "<br>";
+  // my work here based on message
+});
+
+    </script>
+</head>
+<body>
+<div id="result">
+    <!--Server response will be inserted here-->
+</div>
+</body>
+</html>
