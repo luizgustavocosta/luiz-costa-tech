@@ -1,8 +1,8 @@
-package tech.costa.luiz.reactive_db.service;
+package tech.costa.luiz.reactive.service;
 
 import org.springframework.stereotype.Service;
-import tech.costa.luiz.reactive_db.entities.auction.Auction;
-import tech.costa.luiz.reactive_db.entities.user.User;
+import tech.costa.luiz.reactive.entities.auction.Auction;
+import tech.costa.luiz.reactive.entities.user.User;
 
 @Service
 public class AuctionService {

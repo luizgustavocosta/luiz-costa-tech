@@ -1,12 +1,12 @@
-package tech.costa.luiz.reactive_db.entities.user;
+package tech.costa.luiz.reactive.entities.user;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "user")
-@Cacheable
 public class User extends PanacheEntityBase {
 
     @Id
@@ -14,11 +14,15 @@ public class User extends PanacheEntityBase {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long id;
 
-    @Column(length = 40, unique = false)
+    @Column(length = 40)
     public String name;
 
-    @Column(length = 40, unique = false)
+    @Column(length = 40)
     public String lastName;
+
+    public static List<User> findByLastName(String lastName){
+        return list("lastName", lastName);
+    }
 
     @Override
     public String toString() {

@@ -1,8 +1,8 @@
-package tech.costa.luiz.reactive_db.actions.auctions;
+package tech.costa.luiz.reactive.actions.auctions;
 
 import io.smallrye.mutiny.Multi;
 import org.jboss.resteasy.annotations.jaxrs.PathParam;
-import tech.costa.luiz.reactive_db.rxjava.AuctionRepository;
+import tech.costa.luiz.reactive.rxjava.AuctionRepository;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;

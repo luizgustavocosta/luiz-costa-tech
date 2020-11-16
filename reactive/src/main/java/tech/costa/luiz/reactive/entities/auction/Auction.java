@@ -1,4 +1,4 @@
-package tech.costa.luiz.reactive_db.entities.auction;
+package tech.costa.luiz.reactive.entities.auction;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 

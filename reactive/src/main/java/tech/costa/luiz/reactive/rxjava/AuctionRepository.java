@@ -1,4 +1,4 @@
-package tech.costa.luiz.reactive_db.rxjava;
+package tech.costa.luiz.reactive.rxjava;
 
 import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.Flowable;

@@ -1,4 +1,4 @@
-package tech.costa.luiz.reactive_db.service;
+package tech.costa.luiz.reactive.service;
 
 import javax.enterprise.context.ApplicationScoped;
 

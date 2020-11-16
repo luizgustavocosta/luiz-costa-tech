@@ -12,7 +12,7 @@ import reactor.util.function.Tuple2;
 import java.net.URI;
 import java.time.Duration;
 
-@RestController()
+@RestController
 @RequestMapping(value = "/examples")
 @RequiredArgsConstructor
 class ExampleController {

@@ -1,4 +1,4 @@
-package tech.costa.luiz.reactive_db.actions;
+package tech.costa.luiz.reactive.actions;
 
 import io.smallrye.mutiny.Multi;
 import io.vertx.axle.core.Vertx;

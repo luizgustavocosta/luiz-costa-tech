@@ -1,4 +1,4 @@
-package tech.costa.luiz.reactive_db.actions.users;
+package tech.costa.luiz.reactive.actions.users;
 
 import io.quarkus.vertx.web.Body;
 import io.smallrye.mutiny.Multi;
@@ -8,7 +8,7 @@ import org.eclipse.microprofile.metrics.MetricUnits;
 import org.eclipse.microprofile.metrics.annotation.Counted;
 import org.eclipse.microprofile.metrics.annotation.Gauge;
 import org.eclipse.microprofile.metrics.annotation.Timed;
-import tech.costa.luiz.reactive_db.entities.user.User;
+import tech.costa.luiz.reactive.entities.user.User;
 
 import javax.transaction.Transactional;
 import javax.ws.rs.*;
@@ -18,11 +18,10 @@ import javax.ws.rs.core.Response;
 import static io.quarkus.hibernate.orm.panache.PanacheEntityBase.persist;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
-import static tech.costa.luiz.reactive_db.entities.user.User.*;
+import static tech.costa.luiz.reactive.entities.user.User.*;
 
 @Path("/users")
 public class UserResource {
-
 
     @POST
     @Transactional

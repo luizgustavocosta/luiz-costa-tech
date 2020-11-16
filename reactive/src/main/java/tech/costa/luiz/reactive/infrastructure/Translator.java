@@ -1,4 +1,4 @@
-package tech.costa.luiz.reactive_db.infrastructure;
+package tech.costa.luiz.reactive.infrastructure;
 
 import org.eclipse.microprofile.metrics.annotation.Counted;
 
