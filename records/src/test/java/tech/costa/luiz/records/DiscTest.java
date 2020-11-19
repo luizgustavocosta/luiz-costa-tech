@@ -25,8 +25,9 @@ class DiscTest {
                 1984,
                 "Rock, Pop",
                 "New Wave, Pop Rock");
-
         assertNotNull(newDisc, "Is expected a new instance of disc");
+        assertNotNull(newDisc.format());
+        assertNotNull(newDisc.genre());
     }
 
     /**
@@ -44,5 +45,4 @@ class DiscTest {
         assertThat(exception, instanceOf(IllegalArgumentException.class));
         assertThat(exception.getMessage(), containsString("Invalid release year"));
     }
-
 }
