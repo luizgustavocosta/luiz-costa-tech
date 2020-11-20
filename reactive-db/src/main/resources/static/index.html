@@ -1,30 +1,23 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <title>Using Server-Sent Events</title>
-    <script>
-
-    var sse = new EventSource('http://localhost:8080/posts');
-sse.addEventListener('message', function(e) {
-  console.log(e);
-  var data = e.data;
-  if (!data) {
-      console.log('no data in event');
-      return;
-  }
-  if (data === 'finished') {
-      console.log('closing connection')
-      sse.close()
-  }
-   document.getElementById("result").innerHTML += "New time received from web server: " + event.data + "<br>";
-  // my work here based on message
-});
-
-    </script>
-</head>
+<html>
 <body>
-<div id="result">
-    <!--Server response will be inserted here-->
-</div>
+
+<h1>Getting server updates</h1>
+<div id="result"></div>
+
+<script>
+if(typeof(EventSource) !== "undefined") {
+  var source = new EventSource("http://localhost:8080/examples");
+  source.onmessage = function(event) {
+    document.getElementById("result").innerHTML += event.data + "<br>";
+  };
+} else {
+  document.getElementById("result").innerHTML = "Sorry, your browser does not support server-sent events...";
+}
+
+
+</script>
+
 </body>
 </html>
+

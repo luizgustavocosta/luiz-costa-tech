@@ -35,7 +35,7 @@ public class ExampleRepositoryTest {
     @Test
     public void testInsertAndQuery() {
         this.client.insert()
-                .into("posts")
+                .into("examples")
                 //.nullValue("id", Integer.class)
                 .value("title", "testtitle")
                 .value("content", "testcontent")

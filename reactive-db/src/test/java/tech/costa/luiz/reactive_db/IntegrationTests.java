@@ -23,10 +23,10 @@ public class IntegrationTests {
 
     @Test
     public void willLoadPosts() {
-    	this.webClient.get().uri("/posts")
+    	this.webClient.get().uri("/examples")
 				.exchange()
 				.expectStatus().is2xxSuccessful()
-				.expectBodyList(Example.class).hasSize(2);
+				.expectBodyList(Example.class).hasSize(3);
     }
 
 }

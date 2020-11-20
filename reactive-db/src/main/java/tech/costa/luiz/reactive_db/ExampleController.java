@@ -23,7 +23,7 @@ class ExampleController {
 
     @GetMapping(value = "", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public Flux<Example> all() {
-        return Flux.from(service.all());
+        return service.all();
     }
 
     @PostMapping("")
@@ -31,6 +31,11 @@ class ExampleController {
         return this.service.create(example)
                 .map(newPost -> ResponseEntity.created(URI.create("/posts/"+newPost.getId()))
                         .contentType(MediaType.APPLICATION_JSON).build());
+    }
+
+    @GetMapping("/{text}")
+    public Flux<Example> all(@PathVariable("text") String text) {
+        return service.findByTitleContains(text);
     }
 
     @GetMapping("/{id}")
